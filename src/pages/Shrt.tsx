@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Button, Blue, Flex, Input, InputProps, Para } from './../component/Shrtx.style';
 
 const Shrt: React.FC<InputProps> = () => {
-  const [short, setShort] = useState('');
+  const [shortUrls, setShortUrls] = useState<string[]>([]);
   const [copied, setCopied] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [value, setValue] = useState('');
@@ -15,7 +15,7 @@ const Shrt: React.FC<InputProps> = () => {
     setLoading(true);
     try {
       const res = await axios.get(`https://api.shrtco.de/v2/shorten?url=${inputValue}`);
-      setShort(res.data.result.full_short_link);
+      setShortUrls(prevState => [...prevState, res.data.result.full_short_link]);
       setError(false);
     } catch (err) {
       setError(true);
@@ -41,6 +41,12 @@ const Shrt: React.FC<InputProps> = () => {
     setInputValue(value);
     setValue('');
   };
+  
+  const handleDelete = (index: number) => {
+    const updatedUrls = [...shortUrls];
+    updatedUrls.splice(index, 1);
+    setShortUrls(updatedUrls);
+  }
 
   return (
     <Blue>
@@ -54,14 +60,15 @@ const Shrt: React.FC<InputProps> = () => {
       {loading ? (
         <p>loading</p>
       ) : (
-        short && (
-          <Flex>
-            <Para>{short}</Para>
-            <CopyToClipboard text={short} onCopy={() => setCopied(true)}>
+        shortUrls.map((shortUrl, index) => (
+          <Flex key={index} style={{gap: '10px'}}>
+            <Para>{shortUrl}</Para>
+            <CopyToClipboard text={shortUrl} onCopy={() => setCopied(true)}>
               <Button>{copied ? 'Copied!' : 'Copy to clipboard'}</Button>
             </CopyToClipboard>
+            <Button onClick={() => handleDelete(index)}>Delete</Button>
           </Flex>
-        )
+        ))
       )}
       {error && <p>Something went wrong</p>}
     </Blue>
