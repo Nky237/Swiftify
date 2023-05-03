@@ -10,6 +10,8 @@ const Shrt: React.FC<InputProps> = () => {
   const [value, setValue] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const current = new Date();
+  const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
 
   const fetchData = async () => {
     setLoading(true);
@@ -64,7 +66,9 @@ const Shrt: React.FC<InputProps> = () => {
       <Table>
         <tr>
           <th>Original URL</th>
-          <th>Shortened URL URL</th>
+          <th>Shortened URL</th>
+          <th colSpan={2}></th>
+          <th>Date Generated</th>
         </tr>
       {loading ? (
         <p>loading</p>
@@ -77,6 +81,7 @@ const Shrt: React.FC<InputProps> = () => {
               <Para>{copied ? 'Copied!' : 'Copy'}</Para>
             </CopyToClipboard>
             <Para onClick={() => handleDelete(index)}>Delete</Para>
+            <Para>{date}</Para>
           </tr>
         ))
       )}
