@@ -29,7 +29,10 @@ const Container = styled.div `
   display: flex;
 `
 const Main = styled.main `
-  width: 77%;
+  width: 75%;
+  height: 100vh;
+  overflow: auto;
+  margin: auto;
 `
 
 const SideLayout = () => {

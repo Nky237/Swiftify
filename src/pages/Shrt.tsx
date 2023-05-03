@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import axios from 'axios';
-import { Button, Blue, Flex, Input, InputProps, Para } from './../component/Shrtx.style';
+import { Button, Blue, Flex, Input, Table, InputProps, Para, Container } from './../component/Shrtx.style';
 
 const Shrt: React.FC<InputProps> = () => {
   const [shortUrls, setShortUrls] = useState<string[]>([]);
@@ -49,29 +49,41 @@ const Shrt: React.FC<InputProps> = () => {
   }
 
   return (
-    <Blue>
-      <h1>
-        URL <span style={{ color: '#FF943C' }}>Shortner</span>
-      </h1>
+    <Container>
+    <h1>Easy URL Shortner</h1>
+      <Blue>
+        <h3>Simplify your url</h3>
       <Flex>
         <Input placeholder="place a link to shorten" value={value} onChange={(e) => setValue(e.target.value)} />
         <Button onClick={handleClick}>Shorten</Button>
       </Flex>
+      <p>All the shorted URL and their analysis aee public</p>
+      </Blue>
+      <Container>
+      <h3>RECENT URLS</h3>
+      <Table>
+        <tr>
+          <th>Original URL</th>
+          <th>Shortened URL URL</th>
+        </tr>
       {loading ? (
         <p>loading</p>
       ) : (
         shortUrls.map((shortUrl, index) => (
-          <Flex key={index} style={{gap: '10px'}}>
+          <tr key={index} style={{gap: '70px'}}>
+            <Para style={{width: '15%'}}>{inputValue}</Para>
             <Para>{shortUrl}</Para>
             <CopyToClipboard text={shortUrl} onCopy={() => setCopied(true)}>
-              <Button>{copied ? 'Copied!' : 'Copy to clipboard'}</Button>
+              <Para>{copied ? 'Copied!' : 'Copy'}</Para>
             </CopyToClipboard>
-            <Button onClick={() => handleDelete(index)}>Delete</Button>
-          </Flex>
+            <Para onClick={() => handleDelete(index)}>Delete</Para>
+          </tr>
         ))
       )}
+      </Table>
+      </Container>
       {error && <p>Something went wrong</p>}
-    </Blue>
+      </Container>
   );
 };
 
