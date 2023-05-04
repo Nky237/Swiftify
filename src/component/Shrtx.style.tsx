@@ -51,7 +51,7 @@ export const Input = styled.input`
   width: 720px !important;
   margin: auto;
   background-color: white;
-  color: #AB9F9E;
+  color: black;
   height: 43px;
   border: none;
 `;
